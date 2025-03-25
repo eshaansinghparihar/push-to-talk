@@ -28,7 +28,6 @@ io.on('connection', function (socket) {
         const prompt = generateResponse(conversation);
         try {
             const respone = await getOpenAIResponse(prompt);
-            conversation.push({ role: 'bot', content: respone.data.choices[0].message.content });
             socket.emit('bot message', respone.data.choices[0].message.content);
         }
         catch (error) {
