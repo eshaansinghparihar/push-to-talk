@@ -1,5 +1,6 @@
-import express from 'express';
 import path from 'path';
+import express from 'express';
+import http from 'http';
 import { configDotenv } from 'dotenv';
 import { Server } from 'socket.io';
 import generateResponse from './prompts/generateResponse.js';
@@ -11,11 +12,11 @@ const { __dirname } = getGlobals(import.meta.url)
 configDotenv({ path: path.resolve(__dirname, '../.env')});
 
 const app = express();
+const server = http.createServer(app);
 
 const port = 3001;
-const ioPort = 5000;
 
-const io = new Server(ioPort, {
+const io = new Server(server, {
     cors: {
         origin: '*',
     }
@@ -47,7 +48,7 @@ app.get('*', (req, res) => {
     res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
     });
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Server running on port ${port}`);
 }
 );
