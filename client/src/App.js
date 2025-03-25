@@ -28,10 +28,10 @@ function App() {
 
   useEffect(() => {
 
-    const host = window.location.hostname;
+    const host = process.env.REACT_APP_SOCKET_URL;
     console.log(host);
 
-    const socketInstance = io(host+':'+5000);
+    const socketInstance = io(host);
     setSocket(socketInstance);
 
     socketInstance.on('connect', () => {

@@ -6,7 +6,9 @@ import generateResponse from './prompts/generateResponse.js';
 import getOpenAIResponse from './utils/getOpenAIResponse.js';
 import { getGlobals } from 'common-es'
 
-configDotenv();
+const { __dirname } = getGlobals(import.meta.url)
+
+configDotenv({ path: path.resolve(__dirname, '../.env')});
 
 const app = express();
 
@@ -19,7 +21,6 @@ const io = new Server(ioPort, {
     }
 });
 
-const { __dirname } = getGlobals(import.meta.url)
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 io.on('connection', function (socket) {
