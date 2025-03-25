@@ -17,8 +17,6 @@ const io = new Server(ioPort, {
     }
 });
 
-const conversation = [];
-
 io.on('connection', function (socket) {
     console.log('a user connected');
 
@@ -26,8 +24,7 @@ io.on('connection', function (socket) {
         console.log('User disconnected');
     });
 
-    socket.on('user message', async function (msg) {
-        conversation.push({ role: 'user', content: msg });
+    socket.on('user message', async function (conversation) {
         const prompt = generateResponse(conversation);
         try {
             const respone = await getOpenAIResponse(prompt);

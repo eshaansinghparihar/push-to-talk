@@ -19,6 +19,7 @@ function App() {
   const synth = window.speechSynthesis;
   const utterThis = new SpeechSynthesisUtterance();
 
+  const [conversation, setConversation] = useState([]);
   const [clicked, setClicked] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
   const [userText, setUserText] = useState('Hey');
@@ -37,6 +38,7 @@ function App() {
     socketInstance.on('bot message', (msg) => {
       console.log('Bot Message: ' + JSON.stringify(msg));
       setBotText(msg);
+      setConversation([...conversation, { role: 'bot', content: msg }]);
       handleSynthesis(msg);
     });
 
@@ -44,7 +46,6 @@ function App() {
 
   function handleSynthesis(text) {
     utterThis.text = text;
-    // utterThis.voice = synth.getVoices().filter(voice => voice.lang === 'en-GB' && voice.name === 'Google UK English Female')[0];
     utterThis.voice = synth.getVoices().filter(voice => voice.lang === 'en-US' && voice.name === 'Samantha')[0];
     utterThis.pitch = 1;
     utterThis.rate = 0.75;
@@ -85,7 +86,10 @@ function App() {
 
       setUserText(speechResult);
 
-      socket.emit('user message', speechResult);
+      const updatedConversation = [...conversation, { role: 'user', content: speechResult }];
+      setConversation(updatedConversation);
+
+      socket.emit('user message', updatedConversation);
     }
 
     recognition.onerror = (event) => {
