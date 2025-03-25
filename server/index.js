@@ -1,8 +1,10 @@
 import express from 'express';
+import path from 'path';
 import { configDotenv } from 'dotenv';
 import { Server } from 'socket.io';
 import generateResponse from './prompts/generateResponse.js';
 import getOpenAIResponse from './utils/getOpenAIResponse.js';
+import { getGlobals } from 'common-es'
 
 configDotenv();
 
@@ -16,6 +18,9 @@ const io = new Server(ioPort, {
         origin: '*',
     }
 });
+
+const { __dirname } = getGlobals(import.meta.url)
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
 io.on('connection', function (socket) {
     console.log('a user connected');
@@ -36,6 +41,10 @@ io.on('connection', function (socket) {
         }
     });
 });
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, '../client/build', 'index.html'));
+    });
 
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);

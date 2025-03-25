@@ -1,0 +1,20 @@
+{
+  "name": "push-to-talk",
+  "version": "1.0.0",
+  "description": "A Conversational AI",
+  "main": "server/index.js",
+  "scripts": {
+    "build": "cd client && npm install && npm run build",
+    "start": "cd server && npm install && npm run start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eshaansinghparihar/push-to-talk.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eshaansinghparihar/push-to-talk/issues"
+  },
+  "homepage": "https://github.com/eshaansinghparihar/push-to-talk#readme"
+}

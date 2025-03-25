@@ -28,7 +28,10 @@ function App() {
 
   useEffect(() => {
 
-    const socketInstance = io('http://localhost:5000');
+    const host = window.location.hostname;
+    console.log(host);
+
+    const socketInstance = io(host+':'+5000);
     setSocket(socketInstance);
 
     socketInstance.on('connect', () => {
@@ -103,8 +106,6 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
-      </header>
       <div className="App-body">
         <p style={{padding : '5vh'}}><b>You:</b> <em>{userText}</em></p>
         <button onClick={handleListen}>

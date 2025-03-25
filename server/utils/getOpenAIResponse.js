@@ -2,6 +2,7 @@ import axios from "axios";
 export default async function getOpenAIResponse(prompt) {
     try {
         const model = process.env.OPENAI_MODEL;
+        console.log("GPT model:", model);
         const response = await axios.post('https://api.openai.com/v1/chat/completions', {
             model: model,
             messages: [{ role: 'user', content: prompt }],
